@@ -16,11 +16,14 @@ class Babysitter {
     }
 
     int calculatePay() {
-        return calculateDurationInHours() * 12;
+        int payStartTimeToBedtime = calculateDurationInHours(startTime, bedTime) * 12;
+        int payBedtimeToMidnight = calculateDurationInHours(bedTime, endTime) * 8;
+
+        return payStartTimeToBedtime + payBedtimeToMidnight;
     }
 
-    private int calculateDurationInHours() {
-        long seconds = (this.endTime.getTime() - this.startTime.getTime()) / 1000;
+    private int calculateDurationInHours(Date startTime, Date endTime) {
+        long seconds = (endTime.getTime() - startTime.getTime()) / 1000;
 
         return (int) (seconds / 3600);  // calculate hours
     }

@@ -19,13 +19,13 @@ public class BabysitterTest {
         int expectedPay = 48;
         Calendar calendar = Calendar.getInstance();
 
-        calendar.set(2016, 8, 30, 17, 0, 0);
+        calendar.set(2016, 8, 29, 17, 0, 0);
         Date startTime = calendar.getTime();
 
-        calendar.set(2016, 8, 30, 21, 0, 0);
+        calendar.set(2016, 8, 29, 21, 0, 0);
         Date endTime = calendar.getTime();
 
-        calendar.set(2016, 8, 30, 21, 0, 0);
+        calendar.set(2016, 8, 29, 21, 0, 0);
         Date bedTime = calendar.getTime();
 
         Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
@@ -43,14 +43,14 @@ public class BabysitterTest {
         int expectedPay = 72;
         Calendar calendar = Calendar.getInstance();
 
-        calendar.set(2016, 8, 30, 17, 0, 0);
+        calendar.set(2016, 8, 29, 17, 0, 0);
         Date startTime = calendar.getTime();
 
-        calendar.set(2016, 8, 30, 21, 0, 0);
-        Date endTime = calendar.getTime();
-
-        calendar.set(2016, 8, 30, 21, 0, 0);
+        calendar.set(2016, 8, 29, 21, 0, 0);
         Date bedTime = calendar.getTime();
+
+        calendar.set(2016, 8, 30, 0, 0, 0);
+        Date endTime = calendar.getTime();
 
         Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
 
