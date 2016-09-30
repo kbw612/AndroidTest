@@ -14,28 +14,50 @@ import static org.junit.Assert.assertEquals;
  */
 public class BabysitterTest {
     @Test
-    public void caculatePay() throws Exception {
+    public void whenBabysitterWorksUntilBedtime() throws Exception {
         // Arrange
+        int expectedPay = 48;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2016);
-        calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
-        calendar.set(Calendar.DAY_OF_MONTH, 30);
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
 
+        calendar.set(2016, 8, 30, 17, 0, 0);
         Date startTime = calendar.getTime();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 19);
+        calendar.set(2016, 8, 30, 21, 0, 0);
         Date endTime = calendar.getTime();
 
-        Babysitter babysitter = new Babysitter(startTime, endTime);
+        calendar.set(2016, 8, 30, 21, 0, 0);
+        Date bedTime = calendar.getTime();
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
 
         // Act
         int actualPay = babysitter.calculatePay();
 
         // Assert
-        assertEquals(24, actualPay);
+        assertEquals(expectedPay, actualPay);
+    }
+
+    @Test
+    public void whenBabysitterWorksUntilMidnight() throws Exception {
+        // Arrange
+        int expectedPay = 72;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2016, 8, 30, 17, 0, 0);
+        Date startTime = calendar.getTime();
+
+        calendar.set(2016, 8, 30, 21, 0, 0);
+        Date endTime = calendar.getTime();
+
+        calendar.set(2016, 8, 30, 21, 0, 0);
+        Date bedTime = calendar.getTime();
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
     }
 }

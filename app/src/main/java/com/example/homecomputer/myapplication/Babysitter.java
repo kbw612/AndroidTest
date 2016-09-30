@@ -7,10 +7,12 @@ import javax.xml.datatype.Duration;
 class Babysitter {
     private Date startTime;
     private Date endTime;
+    private Date bedTime;
 
-    Babysitter(Date startTime, Date endTime) {
+    Babysitter(Date startTime, Date endTime, Date bedTime) {
         this.startTime = startTime;
         this.endTime = endTime;
+        this.bedTime = bedTime;
     }
 
     int calculatePay() {
