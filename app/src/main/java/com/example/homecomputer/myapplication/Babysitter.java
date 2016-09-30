@@ -2,6 +2,8 @@ package com.example.homecomputer.myapplication;
 
 import java.util.Date;
 
+import javax.xml.datatype.Duration;
+
 class Babysitter {
     private Date startTime;
     private Date endTime;
@@ -12,6 +14,12 @@ class Babysitter {
     }
 
     int calculatePay() {
-        return 0;
+        return calculateDurationInHours() * 12;
+    }
+
+    private int calculateDurationInHours() {
+        long seconds = (this.endTime.getTime() - this.startTime.getTime()) / 1000;
+
+        return (int) (seconds / 3600);  // calculate hours
     }
 }
