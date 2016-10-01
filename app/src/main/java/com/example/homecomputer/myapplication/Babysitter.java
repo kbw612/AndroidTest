@@ -9,25 +9,18 @@ class Babysitter {
     private Date startTime;
     private Date endTime;
     private Date bedTime;
+    private Date midnight;
 
     Babysitter(Date startTime, Date endTime, Date bedTime) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.bedTime = bedTime;
-    }
+     }
 
     int calculatePay() {
-        Calendar startTimeCalendar = Calendar.getInstance();
-        Calendar midnightCalendar = Calendar.getInstance();
         int startTimeToBedtimeDurationInHours, bedTimeToMidnightDurationInHours = 0, midnightToEndTimeDurationInHours = 0;
 
-        startTimeCalendar.setTime(this.startTime);
-        midnightCalendar.set(startTimeCalendar.get(Calendar.YEAR), startTimeCalendar.get(Calendar.MONTH), startTimeCalendar.get(Calendar.DATE), 0 , 0, 0);
-
-        // if start time after 4 am then set midnight to next day midnight
-        if (startTimeCalendar.get(Calendar.HOUR) > 4) {
-            midnightCalendar.add(Calendar.DATE, 1);
-        }
+        setTimes();
 
         if (this.endTime.before(this.bedTime)) {
             startTimeToBedtimeDurationInHours = calculateDurationInHours(this.startTime, this.endTime);
@@ -36,9 +29,9 @@ class Babysitter {
             startTimeToBedtimeDurationInHours = calculateDurationInHours(this.startTime, this.bedTime);
         }
 
-        if (endTime.after(this.bedTime)) {
-            bedTimeToMidnightDurationInHours = calculateDurationInHours(this.bedTime, midnightCalendar.getTime());
-            midnightToEndTimeDurationInHours = calculateDurationInHours(midnightCalendar.getTime(), this.endTime);
+        if (this.endTime.after(this.bedTime)) {
+            bedTimeToMidnightDurationInHours = calculateDurationInHours(this.bedTime, this.midnight);
+            midnightToEndTimeDurationInHours = calculateDurationInHours(this.midnight, this.endTime);
         }
 
         int payStartTimeToBedtime = startTimeToBedtimeDurationInHours * 12;
@@ -46,19 +39,43 @@ class Babysitter {
         int payMidnightToMaxEndTime = midnightToEndTimeDurationInHours * 16;
 
         return payStartTimeToBedtime + payBedtimeToMidnight + payMidnightToMaxEndTime;
-
-
-
-
-
-
-
-
     }
 
     private int calculateDurationInHours(Date startTime, Date endTime) {
-        long seconds = (endTime.getTime() - startTime.getTime()) / 1000;
+        long difference = endTime.getTime() - startTime.getTime();
+        return (int) (difference / (60 * 60 * 1000) % 24);
+    }
 
-        return (int) (seconds / 3600);  // calculate hours
+    private void setTimes() {
+        Calendar startTimeCalendar = Calendar.getInstance();
+        Calendar minStartTimeCalendar = Calendar.getInstance();
+        Calendar midnightCalendar = Calendar.getInstance();
+
+        minStartTimeCalendar.setTime(this.startTime);
+        minStartTimeCalendar.set(minStartTimeCalendar.get(Calendar.YEAR), minStartTimeCalendar.get(Calendar.MONTH), minStartTimeCalendar.get(Calendar.DATE), 17 , 0, 0);
+        Date minStartTime = minStartTimeCalendar.getTime();
+
+        startTimeCalendar.setTime(this.startTime);
+        midnightCalendar.set(startTimeCalendar.get(Calendar.YEAR), startTimeCalendar.get(Calendar.MONTH), startTimeCalendar.get(Calendar.DATE), 0 , 0, 0);
+
+        // if start time after 4 am then set midnight to next day midnight
+        if (startTimeCalendar.get(Calendar.HOUR_OF_DAY) > 4) {
+            midnightCalendar.add(Calendar.DATE, 1);
+        }
+
+        this.midnight = midnightCalendar.getTime();
+
+        midnightCalendar.add(Calendar.HOUR, 4);
+        Date maxEndTime = midnightCalendar.getTime();
+
+        if (this.endTime.after(maxEndTime))
+        {
+            this.endTime = maxEndTime;
+        }
+
+        if (this.startTime.before(minStartTime))
+        {
+            this.startTime = minStartTime;
+        }
     }
 }

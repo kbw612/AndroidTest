@@ -84,4 +84,28 @@ public class BabysitterTest {
         // Assert
         assertEquals(expectedPay, actualPay);
     }
+
+    @Test
+    public void whenBabysitterStartsWorkBefore5pmAndStopsWorkAfter4am() throws Exception {
+        // Arrange
+        int expectedPay = 136;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2016, 8, 29, 16, 0, 0);
+        Date startTime = calendar.getTime();
+
+        calendar.set(2016, 8, 29, 21, 0, 0);
+        Date bedTime = calendar.getTime();
+
+        calendar.set(2016, 8, 30, 5, 0, 0);
+        Date endTime = calendar.getTime();
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
+    }
 }
