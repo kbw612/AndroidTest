@@ -86,11 +86,16 @@ class Babysitter {
         if (this.bedTime.isBefore(this.minimumStartTime) && this.minimumStartTime.isBefore(this.midnight)) {
             isValid = false;
         }
-
-        if (this.bedTime.isAfter(this.maxEndTime))
+        else if (this.bedTime.isAfter(this.maxEndTime))
         {
             isValid = false;
         }
+        else if (this.startTime.isAfter(this.endTime))
+        {
+            isValid = false;
+        }
+
+
 
         return isValid;
     }

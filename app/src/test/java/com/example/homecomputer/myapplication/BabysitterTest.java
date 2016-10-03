@@ -159,4 +159,24 @@ public class BabysitterTest {
         // Assert
         assertEquals(expectedPay, actualPay);
     }
+
+    @Test
+    public void whenStartTimeIsGreaterThanEndTime() throws Exception {
+        // Arrange
+        int expectedPay = 0;
+
+        DateTime startTime = new DateTime(2016, 8, 29, 23, 0, 0);
+        DateTime bedTime = new DateTime(2016, 8, 29, 21, 0, 0);
+        DateTime endTime = new DateTime(2016, 8, 29, 19, 0, 0);
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
+    }
+
+
 }
