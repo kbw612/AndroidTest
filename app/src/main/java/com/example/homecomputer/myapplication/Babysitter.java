@@ -9,10 +9,13 @@ class Babysitter {
     private DateTime bedTime;
     private DateTime midnight;
     private DateTime minimumStartTime;
+    private DateTime maxEndTime;
 
     private final int START_TIME_TO_BEDTIME_HOURLY_RATE = 12;
     private final int BEDTIME_TO_MIDNIGHT_HOURLY_RATE = 8;
     private final int MIDNIGHT_TO_END_TIME_HOURLY_RATE = 16;
+    private final int FOUR_AM_MILITARY_TIME = 4;
+    private final int FIVE_PM_MILITARY_TIME = 17;
 
     Babysitter(DateTime startTime, DateTime endTime, DateTime bedTime) {
         this.startTime = removeMinutesAndSeconds(startTime);
@@ -84,6 +87,11 @@ class Babysitter {
             isValid = false;
         }
 
+        if (this.bedTime.isAfter(this.maxEndTime))
+        {
+            isValid = false;
+        }
+
         return isValid;
     }
 
@@ -97,16 +105,16 @@ class Babysitter {
         this.midnight = new DateTime(this.minimumStartTime.getYear(), this.minimumStartTime.getMonthOfYear(), this.minimumStartTime.getDayOfMonth(), 0, 0, 0);
 
         // if start time after 4 am then set midnight to next day midnight
-        if (this.minimumStartTime.getHourOfDay() > 4) {
+        if (this.minimumStartTime.getHourOfDay() > FOUR_AM_MILITARY_TIME) {
             this.midnight = this.midnight.plusDays(1);
-            this.minimumStartTime = new DateTime(this.minimumStartTime.getYear(), this.minimumStartTime.getMonthOfYear(), this.minimumStartTime.getDayOfMonth(), 17, 0, 0);
+            this.minimumStartTime = new DateTime(this.minimumStartTime.getYear(), this.minimumStartTime.getMonthOfYear(), this.minimumStartTime.getDayOfMonth(), FIVE_PM_MILITARY_TIME, 0, 0);
         }
 
-        DateTime maxEndTime = midnight.plusHours(4);
+        this.maxEndTime = midnight.plusHours(FOUR_AM_MILITARY_TIME);
 
         // make sure end time is 4 am or earlier
-        if (this.endTime.isAfter(maxEndTime)) {
-            this.endTime = maxEndTime;
+        if (this.endTime.isAfter(this.maxEndTime)) {
+            this.endTime = this.maxEndTime;
         }
 
         // make sure start time is 5 pm or later
