@@ -178,5 +178,59 @@ public class BabysitterTest {
         assertEquals(expectedPay, actualPay);
     }
 
+    @Test
+    public void whenBabysitterStartsWorkingAtBedtimeAndStopsWorkingAt4am() throws Exception {
+        // Arrange
+        int expectedPay = 88;
+
+        DateTime startTime = new DateTime(2016, 8, 29, 21, 0, 0);
+        DateTime bedTime = new DateTime(2016, 8, 29, 21, 0, 0);
+        DateTime endTime = new DateTime(2016, 8, 30, 4, 0, 0);
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
+    }
+
+    @Test
+    public void whenBabysitterStartsWorkingAfterBedtimeAndStopsWorkingBeforeMidnight() throws Exception {
+        // Arrange
+        int expectedPay = 8;
+
+        DateTime startTime = new DateTime(2016, 8, 29, 22, 0, 0);
+        DateTime bedTime = new DateTime(2016, 8, 29, 21, 0, 0);
+        DateTime endTime = new DateTime(2016, 8, 29, 23, 0, 0);
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
+    }
+
+    public void whenBabysitterStartsAndStopsWorkingBeforeBedtime() throws Exception {
+        // Arrange
+        int expectedPay = 24;
+
+        DateTime startTime = new DateTime(2016, 8, 29, 18, 0, 0);
+        DateTime bedTime = new DateTime(2016, 8, 29, 21, 0, 0);
+        DateTime endTime = new DateTime(2016, 8, 29, 20, 0, 0);
+
+        Babysitter babysitter = new Babysitter(startTime, endTime, bedTime);
+
+        // Act
+        int actualPay = babysitter.calculatePay();
+
+        // Assert
+        assertEquals(expectedPay, actualPay);
+    }
+
+
 
 }
