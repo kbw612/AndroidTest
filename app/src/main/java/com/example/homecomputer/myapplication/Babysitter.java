@@ -8,6 +8,7 @@ class Babysitter {
     private DateTime endTime;
     private DateTime bedTime;
     private DateTime midnight;
+    private DateTime minimumStartTime;
 
     private final int START_TIME_TO_BEDTIME_HOURLY_RATE = 12;
     private final int BEDTIME_TO_MIDNIGHT_HOURLY_RATE = 8;
@@ -17,17 +18,22 @@ class Babysitter {
         this.startTime = removeMinutesAndSeconds(startTime);
         this.endTime = removeMinutesAndSeconds(endTime);
         this.bedTime = removeMinutesAndSeconds(bedTime);
+        minimumStartTime = new DateTime(this.startTime);
      }
 
-    int calculatePay()
-    {
-        setTimes();
+    int calculatePay() {
+        initializeTimeProperties();
 
-        int payStartTimeToBedtime = calcuatePayBeforeBedtime();
-        int payBedtimeToMidnight = calcuatePayFromBedtimeToMidnight();
-        int payMidnightToEndTime = calcuatePayFromMidnightToEndTime();
+        if (areTimePropertiesValid()) {
+            int payStartTimeToBedtime = calcuatePayBeforeBedtime();
+            int payBedtimeToMidnight = calcuatePayFromBedtimeToMidnight();
+            int payMidnightToEndTime = calcuatePayFromMidnightToEndTime();
 
-        return payStartTimeToBedtime + payBedtimeToMidnight + payMidnightToEndTime;
+            return payStartTimeToBedtime + payBedtimeToMidnight + payMidnightToEndTime;
+        }
+        else {
+            return 0;
+        }
     }
 
     private int calcuatePayBeforeBedtime()
@@ -48,8 +54,7 @@ class Babysitter {
     {
         int bedTimeToMidnightDurationInHours = 0;
 
-        if (this.startTime.isBefore(this.midnight) && this.endTime.isAfter(this.bedTime))
-        {
+        if (this.startTime.isBefore(this.midnight) && this.endTime.isAfter(this.bedTime)) {
             bedTimeToMidnightDurationInHours = calculateDurationInHours(this.bedTime, this.midnight);
         }
 
@@ -72,39 +77,45 @@ class Babysitter {
         return midnightToEndTimeDurationInHours * MIDNIGHT_TO_END_TIME_HOURLY_RATE;
     }
 
+    private boolean areTimePropertiesValid() {
+        boolean isValid = true;
+
+        if (this.bedTime.isBefore(this.minimumStartTime) && this.minimumStartTime.isBefore(this.midnight)) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     private int calculateDurationInHours(DateTime startTime, DateTime endTime) {
         Period duration = new Period(startTime, endTime);
 
         return duration.getHours();
     }
 
-    private void setTimes() {
-        DateTime minimumStartDateTime = new DateTime(this.startTime);
-        this.midnight = new DateTime(minimumStartDateTime.getYear(), minimumStartDateTime.getMonthOfYear(), minimumStartDateTime.getDayOfMonth(), 0, 0, 0);
+    private void initializeTimeProperties() {
+        this.midnight = new DateTime(this.minimumStartTime.getYear(), this.minimumStartTime.getMonthOfYear(), this.minimumStartTime.getDayOfMonth(), 0, 0, 0);
 
         // if start time after 4 am then set midnight to next day midnight
-        if (minimumStartDateTime.getHourOfDay() > 4) {
+        if (this.minimumStartTime.getHourOfDay() > 4) {
             this.midnight = this.midnight.plusDays(1);
-            minimumStartDateTime = new DateTime(minimumStartDateTime.getYear(), minimumStartDateTime.getMonthOfYear(), minimumStartDateTime.getDayOfMonth(), 17, 0, 0);
+            this.minimumStartTime = new DateTime(this.minimumStartTime.getYear(), this.minimumStartTime.getMonthOfYear(), this.minimumStartTime.getDayOfMonth(), 17, 0, 0);
         }
 
         DateTime maxEndTime = midnight.plusHours(4);
 
         // make sure end time is 4 am or earlier
-        if (this.endTime.isAfter(maxEndTime))
-        {
+        if (this.endTime.isAfter(maxEndTime)) {
             this.endTime = maxEndTime;
         }
 
         // make sure start time is 5 pm or later
-        if (this.startTime.isBefore(minimumStartDateTime))
-        {
-            this.startTime = minimumStartDateTime;
+        if (this.startTime.isBefore(this.minimumStartTime)) {
+            this.startTime = this.minimumStartTime;
         }
     }
 
-    private DateTime removeMinutesAndSeconds(DateTime dateTime)
-    {
+    private DateTime removeMinutesAndSeconds(DateTime dateTime) {
         return new DateTime(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getHourOfDay(), 0, 0);
     }
 }
