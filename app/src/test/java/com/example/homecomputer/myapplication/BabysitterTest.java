@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class BabysitterTest {
     @Test
-    public void whenBabysitterWorksUntilBedtime() throws Exception {
+    public void calculatePay_BabysitterWorksUntilBedtime_Returns48Dollars() throws Exception {
         // Arrange
         int expectedPay = 48;
 
@@ -35,7 +35,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterWorksUntilMidnight() throws Exception {
+    public void calculatePay_BabysitterWorksUntilMidnight_Returns72Dollars() throws Exception {
         // Arrange
         int expectedPay = 72;
 
@@ -53,7 +53,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterWorksAllPossibleHours() throws Exception {
+    public void calculatePay_BabysitterWorksAllPossibleHours_Returns136Dollars() throws Exception {
         // Arrange
         int expectedPay = 136;
 
@@ -71,7 +71,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterStartsWorkBefore5pmAndStopsWorkAfter4am() throws Exception {
+    public void calculatePay_BabysitterStartsWorkBefore5pmAndStopsWorkAfter4am_Returns136Dollars() throws Exception {
         // Arrange
         int expectedPay = 136;
 
@@ -89,7 +89,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterStartsWorkingAtMidnightAndStopsWorkingAt4am() throws Exception {
+    public void calculatePay_BabysitterStartsWorkingAtMidnightAndStopsWorkingAt4am_Returns64Dollars() throws Exception {
         // Arrange
         int expectedPay = 64;
 
@@ -107,7 +107,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterStartsAndEndsWorkWithFractionalHours() throws Exception {
+    public void calculatePay_BabysitterStartsAndEndsWorkWithFractionalHours_Returns136Dollars() throws Exception {
         // Arrange
         int expectedPay = 136;
 
@@ -125,7 +125,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBedtimePassedIsBefore5PmStartTime() throws Exception {
+    public void calculatePay_BedtimePassedIsBefore5PmStartTime_ReturnsZeroDollars() throws Exception {
         // Arrange
         int expectedPay = 0;
 
@@ -143,7 +143,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBedtimePassedIsAfter4AmEndTime() throws Exception {
+    public void calculatePay_BedtimePassedIsAfter4AmEndTime_ReturnsZeroDollars() throws Exception {
         // Arrange
         int expectedPay = 0;
 
@@ -161,7 +161,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenStartTimeIsGreaterThanEndTime() throws Exception {
+    public void calculatePay_StartTimeIsGreaterThanEndTime_ReturnsZeroDollars() throws Exception {
         // Arrange
         int expectedPay = 0;
 
@@ -179,7 +179,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterStartsWorkingAtBedtimeAndStopsWorkingAt4am() throws Exception {
+    public void calculatePay_BabysitterStartsWorkingAtBedtimeAndStopsWorkingAt4am_Returns88Dollars() throws Exception {
         // Arrange
         int expectedPay = 88;
 
@@ -197,7 +197,7 @@ public class BabysitterTest {
     }
 
     @Test
-    public void whenBabysitterStartsWorkingAfterBedtimeAndStopsWorkingBeforeMidnight() throws Exception {
+    public void calculatePay_BabysitterStartsWorkingAfterBedtimeAndStopsWorkingBeforeMidnight_Returns8Dollars() throws Exception {
         // Arrange
         int expectedPay = 8;
 
@@ -214,7 +214,7 @@ public class BabysitterTest {
         assertEquals(expectedPay, actualPay);
     }
 
-    public void whenBabysitterStartsAndStopsWorkingBeforeBedtime() throws Exception {
+    public void calculatePay_BabysitterStartsAndStopsWorkingBeforeBedtime_Returns24Dollars() throws Exception {
         // Arrange
         int expectedPay = 24;
 
